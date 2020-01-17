@@ -17,6 +17,7 @@ END COMPONENT;
 --The input signals with their initial values
 SIGNAL clk, s_reset, s_output: STD_LOGIC := '0';
 SIGNAL s_input: std_logic_vector(7 downto 0) := (others => '0');
+signal test_string;
 
 CONSTANT clk_period : time := 1 ns;
 CONSTANT SLASH_CHARACTER : std_logic_vector(7 downto 0) := "00101111";
@@ -44,7 +45,18 @@ BEGIN
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "When reading a meaningless character, the output should be '0'" SEVERITY ERROR;
 	REPORT "_______________________";
-    
+	
+	REPORT "___________Single Line____________";
+	s_reset <= 1;
+	WAIT FOR 1 * clk_period;
+	s_reset <= 0;
+	WAIT FOR 1 * clk_period;
+
+	REPORT "//comment\n no comment";
+	s_input <=
+
+
+
 	WAIT;
 END PROCESS stim_process;
 END;
