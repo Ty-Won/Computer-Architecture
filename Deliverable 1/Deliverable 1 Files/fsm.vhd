@@ -33,6 +33,7 @@ begin
             when uncommented =>
                 if input /= SLASH_CHARACTER then
                     output <= '0';
+                    state <= uncommented; 
                 else
                     state <= slash;
                     output <= '0';
@@ -46,6 +47,7 @@ begin
                     output <= '0';
                 else
                     state <= uncommented;
+                    output <= '0';
                 end if;
             when one_line_comment =>
                 if input /= NEW_LINE_CHARACTER then
