@@ -9,49 +9,41 @@ port (clk : in std_logic;
   );
 end pipeline;
 
---!
-op1 is the intermediate result of a + b
-op2 is the intermediate result of op1 * 42
-op3 is the intermediate result of c * d
-op4 is the intermediate result of a – e
-op5 is the intermediate result of op3 * op4
-final_output is the result of op2 – op5
---!
 
 architecture behavioral of pipeline is
 
-signal prev_a : integer;
-signal prev_b : integer;
-signal prev_c : integer;
-signal prev_d : integer;
-signal prev_e : integer;
+signal async_op1 : integer := 0;
+signal async_op2 : integer := 0;
+signal async_op3 : integer := 0;
+signal async_op4 : integer := 0;
+signal async_op5 : integer := 0;
 
-
-signal async_op1 : integer;
-signal async_op2 : integer;
-signal async_op3 : integer;
-signal async_op4 : integer;
-signal async_op5 : integer;
-
-signal change_in_input: boolean;
 
 begin
 -- todo: complete this
 process (clk)
 begin
   if rising_edge(clk) then
-    if (a /= prev_a or b /= prev_b or e/=prev_e) then
-      async_op1 <= op1;
-      op1 <= a + b;
-      if a/=prev_a or e/=prev_e then:
-        async_op4 <= op4;
+	--calculate final output based on prev async op2 and op5
+	final_output <= async_op2 - async_op5;
+
+	-- calculate new op2
+	op2 <= async_op1 * 42;
+	async_op2 <= async_op1 * 42;
+
+	-- calculate new op5
+	op5 <= async_op3 * async_op4;
+	async_op5 <= async_op3 * async_op4;
+
+	-- Process new inputs
+      	op1 <= a + b;
+	op3 <= c*d;
         op4 <= a-e;
-      end if;
-    end if;
-    if c /= prev_c or d /= prev_d then:
-      async_op3 <= op3;
-      op3 <= c*d;
-    end if;
+
+	-- store outputs for next cycle
+	async_op1 <= a+b;
+	async_op3 <= c*d;
+	async_op4 <= a-e;
   end if;
     
 
