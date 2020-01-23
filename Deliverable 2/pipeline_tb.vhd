@@ -37,7 +37,8 @@ END PROCESS;
 
 stim_process: PROCESS
 BEGIN   
-	REPORT "[a=1,b=2,c=3,d=4,e=5]";
+	-- FULL
+	REPORT "Filling up pipeline with full input [a=1,b=2,c=3,d=4,e=5]";
 	s_a <= 1;
 	s_b <= 2;
 	s_c <= 3;
@@ -53,7 +54,7 @@ BEGIN
 	REPORT "_______________________";
 
 
-	REPORT "[a=5,b=2,c=4,d=10,e=6]";
+	REPORT "Filling up pipeline with another input [a=5,b=2,c=4,d=10,e=6]";
 	s_a <= 5;
 	s_b <= 2;
 	s_c <= 4;
@@ -69,7 +70,7 @@ BEGIN
 	REPORT "_______________________";
 
 
-	REPORT "[a=0,b=3,c=1,d=2,e=2]";
+	REPORT " Filling up pipeline with another input[a=0,b=3,c=1,d=2,e=2]";
 	s_a <= 0;
 	s_b <= 3;
 	s_c <= 1;
@@ -84,8 +85,8 @@ BEGIN
 	ASSERT (s_final_output = 174) REPORT "the output should be '174'" SEVERITY ERROR;
 	REPORT "_______________________";
 
-
-	REPORT "[a=0,b=0,c=0,d=0,e=0]";
+	--half full
+	REPORT "Begin draining the pipeline to make it half full [a=0,b=0,c=0,d=0,e=0]";
 	s_a <= 0;
 	s_b <= 0;
 	s_c <= 0;
@@ -101,6 +102,38 @@ BEGIN
 	REPORT "_______________________";
 
 
+	--emptying the pipeline
+	REPORT "Draining the pipeline [a=0,b=0,c=0,d=0,e=0]";
+	s_a <= 0;
+	s_b <= 0;
+	s_c <= 0;
+	s_d <= 0;
+	s_e <= 0;
+	WAIT FOR 1 * clk_period;
+	ASSERT (s_op1 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op2 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op3 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op4 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op5 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_final_output = 130) REPORT "the output should be '130'" SEVERITY ERROR;
+	REPORT "_______________________";
+
+
+	--emptying the pipeline
+	REPORT "Finishing up and emptying the pipeline completely [a=0,b=0,c=0,d=0,e=0]";
+	s_a <= 0;
+	s_b <= 0;
+	s_c <= 0;
+	s_d <= 0;
+	s_e <= 0;
+	WAIT FOR 1 * clk_period;
+	ASSERT (s_op1 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op2 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op3 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op4 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_op5 = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	ASSERT (s_final_output = 0) REPORT "the output should be '0'" SEVERITY ERROR;
+	REPORT "_______________________";
 
 	WAIT;
 
